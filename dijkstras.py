@@ -40,7 +40,7 @@ def dijkstras_algorithm(grid: list):
                 node.visit_path()
                 if node == end_node:
                     best_distance = node.distance
-                time.sleep(0.01 * (10-pathfinding_utils.speed))
+                time.sleep(0.005 * (10-pathfinding_utils.speed))
                 node.hide_path()
                 
 
