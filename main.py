@@ -1,8 +1,8 @@
-from pyglet.window import mouse
+from pyglet.window import mouse, key
 import pyglet
 import controller
 
-control_window = pyglet.window.Window(width=400, height=200, caption="Control")
+control_window = pyglet.window.Window(width=400, height=240, caption="Control")
 
 control_window_elements = controller.create_control_window()
 
@@ -19,9 +19,12 @@ def on_mouse_press(x, y, button, modifiers):
         if is_point_on_object(x, y, element):
             try:
                 element.press_button()
+                if modifiers & key.MOD_SHIFT and (element.text.text == "Up" or element.text.text == "Down"):
+                    print("Shifted")
+                    for i in range(4):
+                        element.press_button()
             except:
-                pass
-            break
+                continue
 
 
 @control_window.event

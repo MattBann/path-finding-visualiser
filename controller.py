@@ -16,10 +16,12 @@ new_grid = []
 # Label definitions:
 width_label = pyglet.text.Label(text=str(width), x=110, y=180, batch=controller_batch_foreground)
 height_label = pyglet.text.Label(text=str(height), x=110, y=160, batch=controller_batch_foreground)
+speed_label = pyglet.text.Label(text=str(pathfinding_utils.speed), x=110, y=200, batch=controller_batch_foreground)
 
 def update_labels():
     width_label.text = str(width)
     height_label.text = str(height)
+    speed_label.text = str(pathfinding_utils.speed)
 
 @grid_window.event
 def on_mouse_press(x, y, button, modifiers):
@@ -83,6 +85,14 @@ def show_grid():
     grid_window.clear()
     grid.grid_batch.draw()
     
+def increase_speed():
+    if pathfinding_utils.speed < 10 : pathfinding_utils.speed += 1
+    update_labels()
+def decrease_speed():
+    if pathfinding_utils.speed > 1 : pathfinding_utils.speed -= 1
+    update_labels()
+
+
 def increase_width():
     global width
     if width < 190: width+=1
@@ -132,6 +142,8 @@ def create_control_window():
     elements.append(Button(160, 100, 80, 20, "Clear Grid", clear_grid))
     elements.append(Button(130, 70, 140, 20, "Use Euclidean", use_euclidean))
     elements.append(Button(130, 40, 140, 20, "Use Manhattan", use_manhattan))
-
+    elements.append(Button(150, 200, 40, 15, "Up", increase_speed))
+    elements.append(Button(200, 200, 40, 15, "Down", decrease_speed))
+    elements.append(pyglet.text.Label("Speed", x=50, y=200, batch=controller_batch_foreground))
 
     return elements

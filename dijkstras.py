@@ -1,6 +1,6 @@
 import math
 import time
-from pathfinding_utils import get_adjacents
+import pathfinding_utils
 
 
 def dijkstras_algorithm(grid: list):
@@ -30,7 +30,7 @@ def dijkstras_algorithm(grid: list):
 
     while running:
         current_node.visited = True
-        adjacents = get_adjacents(current_node, grid)
+        adjacents = pathfinding_utils.get_adjacents(current_node, grid)
         
         for node in adjacents:
             new_distance = current_node.distance+math.sqrt((node.grid_x-current_node.grid_x)**2 + (node.grid_y-current_node.grid_y)**2)
@@ -40,7 +40,7 @@ def dijkstras_algorithm(grid: list):
                 node.visit_path()
                 if node == end_node:
                     best_distance = node.distance
-                time.sleep(0.01)
+                time.sleep(0.01 * (10-pathfinding_utils.speed))
                 node.hide_path()
                 
 
