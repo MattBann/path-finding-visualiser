@@ -6,9 +6,10 @@ from typing import Callable
 import pyglet
 from pyglet.window import mouse
 
-import dijkstras
+import pathfinding.dijkstras as dijkstras
 import grid
-import pathfinding_utils
+import pathfinding.pathfinding_utils as pathfinding_utils
+import pathfinding.a_star as a_star
 
 # Grid dimensions
 width, height = 50, 40
@@ -134,7 +135,8 @@ def decrease_height():
 def run_dijkstras():
     print("Running dijkstras")
     clear_grid()
-    a = threading.Thread(target=dijkstras.dijkstras_algorithm, args=(new_grid,), daemon=True)
+    # a = threading.Thread(target=dijkstras.dijkstras_algorithm, args=(new_grid,), daemon=True)
+    a = threading.Thread(target=a_star.a_star_algorithm, args=(new_grid,), daemon=True)
     a.start()
 
 

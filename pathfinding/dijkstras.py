@@ -3,7 +3,7 @@
 
 import math
 import time
-import pathfinding_utils
+import pathfinding.pathfinding_utils as pathfinding_utils
 
 
 def dijkstras_algorithm(grid):
