@@ -1,7 +1,6 @@
 # Path finding visualiser
 
 A visualisation tool for path-finding algorithms, written in python.
-Currently, only Dijkstra's algorithm is implemented, but I plan to add more.
 
 ## Requirements
 
@@ -24,7 +23,7 @@ Change the above values by clicking the up or down buttons next to them. To incr
 
 Click 'Create Grid' to open a new window showing the grid:
  - Left click a tile to cycle its state between start point (blue), end point (green) or empty (white). If multiple tiles are marked as the start or end, only one will be used
- - Right click an empty tile to set it as a wall
+ - Right click an empty tile to set it as a wall. Drag with right click to set multiple tiles as walls
 
 The 'Clear Grid' button resets the grid after an algorithm is run, though doesn't change the start point, end point, or walls. 
 
@@ -33,3 +32,9 @@ There also buttons to select the type of geometry the system can use, which will
  - Manhattan means only immediate (non diagonal) neighbours are allowed, forcing it to use a 'Manhattan distance', so called because of the grid nature of Manhattan's map
 
 Once all options are set, and start/end nodes selected, click one of the algorithms to start it, and watch it play out on the grid.
+
+## Algorithms
+
+You can choose between Dijkstra's Algorithm and the A* Algorithm. Both follow the principal of exploring neighbouring cells in order of their score.
+For Dijkstra, this score is just the distance to a cell from the start point through the best path. This causes it to naivly explore radially in all directions when unobstructed.
+The score in A* is the sum of the distance to a cell from the start point through the best path and a heuristic (estimated) distance from the cell to the end point. Here, the heuristic is Euclidian distance (i.e. straight line distance), though other heuristics like Manhattan distance are also valid. This results in the algorithm having a sense of direction, unlike in Dijkstras.
