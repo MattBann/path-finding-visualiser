@@ -49,6 +49,18 @@ def on_mouse_press(x, y, button, modifiers):
     elif button == mouse.MIDDLE:
         new_grid[grid_x][grid_y].middle_click_cell()
 
+previous_clicked_cell = None
+
+@grid_window.event
+def on_mouse_drag(x, y , dx, dy, buttons, modifiers):
+    if buttons & mouse.RIGHT:
+        global previous_clicked_cell
+        grid_x, grid_y = x//10, y//10
+        if not (0 <= grid_x < width and 0<= grid_y < height) or previous_clicked_cell == (grid_x, grid_y):
+            return
+        new_grid[grid_x][grid_y].right_click_cell()
+        previous_clicked_cell = (grid_x, grid_y)
+
 
 # Draw the grid window. Clear the screen then draw the cells
 @grid_window.event
