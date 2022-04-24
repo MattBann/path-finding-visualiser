@@ -2,7 +2,7 @@ from pyglet.window import mouse, key
 import pyglet
 import controller
 
-control_window = pyglet.window.Window(width=400, height=220, caption="Control")
+control_window = pyglet.window.Window(width=400, height=250, caption="Control")
 
 # List of elements in the control window
 control_window_elements = controller.create_control_window()

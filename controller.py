@@ -23,9 +23,9 @@ grid_window = pyglet.window.Window(width=(width*10), height=(height*10), caption
 new_grid = []
 
 # Label definitions:
-width_label = pyglet.text.Label(text=str(width), x=160, y=180, batch=controller_batch_foreground)
-height_label = pyglet.text.Label(text=str(height), x=160, y=160, batch=controller_batch_foreground)
-speed_label = pyglet.text.Label(text=str(pathfinding_utils.speed), x=160, y=200, batch=controller_batch_foreground)
+width_label = pyglet.text.Label(text=str(width), x=160, y=210, batch=controller_batch_foreground)
+height_label = pyglet.text.Label(text=str(height), x=160, y=190, batch=controller_batch_foreground)
+speed_label = pyglet.text.Label(text=str(pathfinding_utils.speed), x=160, y=230, batch=controller_batch_foreground)
 
 
 def update_labels():
@@ -49,14 +49,16 @@ def on_mouse_press(x, y, button, modifiers):
     elif button == mouse.MIDDLE:
         new_grid[grid_x][grid_y].middle_click_cell()
 
-previous_clicked_cell = None
 
+# Drag the mouse with a button pressed. For setting multiple cells as walls at once
+previous_clicked_cell = None
 @grid_window.event
 def on_mouse_drag(x, y , dx, dy, buttons, modifiers):
     if buttons & mouse.RIGHT:
         global previous_clicked_cell
         grid_x, grid_y = x//10, y//10
-        if not (0 <= grid_x < width and 0<= grid_y < height) or previous_clicked_cell == (grid_x, grid_y):
+        # Validate that point is in grid and is not the same cell as was previously toggled
+        if not (0 <= grid_x < width and 0 <= grid_y < height) or previous_clicked_cell == (grid_x, grid_y):
             return
         new_grid[grid_x][grid_y].right_click_cell()
         previous_clicked_cell = (grid_x, grid_y)
@@ -147,7 +149,13 @@ def decrease_height():
 def run_dijkstras():
     print("Running dijkstras")
     clear_grid()
-    # a = threading.Thread(target=dijkstras.dijkstras_algorithm, args=(new_grid,), daemon=True)
+    a = threading.Thread(target=dijkstras.dijkstras_algorithm, args=(new_grid,), daemon=True)
+    a.start()
+
+
+def run_a_star():
+    print("Running A* Algorithm")
+    clear_grid()
     a = threading.Thread(target=a_star.a_star_algorithm, args=(new_grid,), daemon=True)
     a.start()
 
@@ -167,21 +175,22 @@ def use_manhattan():
 # Create and return a list of elements that a drawn inside the control window, including buttons and labels
 def create_control_window():
     elements = []
-    elements.append(Button(150, 130, 100, 20, "Create Grid", button_action=show_grid))
+    elements.append(Button(150, 160, 100, 20, "Create Grid", button_action=show_grid))
     elements.append(width_label)
-    elements.append(pyglet.text.Label("Width", x=100, y=180, batch=controller_batch_foreground))
-    elements.append(Button(200, 180, 40, 17, "Up", increase_width))
-    elements.append(Button(250, 180, 40, 17, "Down", decrease_width))
-    elements.append(Button(200, 160, 40, 17, "Up", increase_height))
-    elements.append(Button(250, 160, 40, 17, "Down", decrease_height))
+    elements.append(pyglet.text.Label("Width", x=100, y=210, batch=controller_batch_foreground))
+    elements.append(Button(200, 210, 40, 17, "Up", increase_width))
+    elements.append(Button(250, 210, 40, 17, "Down", decrease_width))
+    elements.append(Button(200, 190, 40, 17, "Up", increase_height))
+    elements.append(Button(250, 190, 40, 17, "Down", decrease_height))
     elements.append(height_label)
-    elements.append(pyglet.text.Label("Height", x=100, y=160, batch=controller_batch_foreground))
-    elements.append(Button(160,10,80,20,"Dijkstras", run_dijkstras))
-    elements.append(Button(160, 100, 80, 20, "Clear Grid", clear_grid))
-    elements.append(Button(130, 70, 140, 20, "Use Euclidean", use_euclidean))
-    elements.append(Button(130, 40, 140, 20, "Use Manhattan", use_manhattan))
-    elements.append(Button(200, 200, 40, 17, "Up", increase_speed))
-    elements.append(Button(250, 200, 40, 17, "Down", decrease_speed))
-    elements.append(pyglet.text.Label("Speed", x=100, y=200, batch=controller_batch_foreground))
+    elements.append(pyglet.text.Label("Height", x=100, y=190, batch=controller_batch_foreground))
+    elements.append(Button(160,40,80,20,"Dijkstras", run_dijkstras))
+    elements.append(Button(160,10,80,20,"A star", run_a_star))
+    elements.append(Button(160, 130, 80, 20, "Clear Grid", clear_grid))
+    elements.append(Button(130, 100, 140, 20, "Use Euclidean", use_euclidean))
+    elements.append(Button(130, 70, 140, 20, "Use Manhattan", use_manhattan))
+    elements.append(Button(200, 230, 40, 17, "Up", increase_speed))
+    elements.append(Button(250, 230, 40, 17, "Down", decrease_speed))
+    elements.append(pyglet.text.Label("Speed", x=100, y=230, batch=controller_batch_foreground))
 
     return elements

@@ -5,10 +5,9 @@ import time
 import pathfinding.pathfinding_utils as pathfinding_utils
 
 
+# Heuristic function, which returns euclidian distance between the given node and end point
 def calculate_heuristic(node, end_node):
-    # return 0
     return math.sqrt((node.x-end_node.x)**2 + (node.y-end_node.y)**2)
-    # return abs(node.x-end_node.x) + abs(node.y-end_node.y)
 
 
 def a_star_algorithm(grid):
@@ -62,7 +61,7 @@ def a_star_algorithm(grid):
                 time.sleep(0.005 * (10-pathfinding_utils.speed))
                 node.hide_path()
                 
-        # Use insertion sort to add newly discovered unvisted nodes to unvisited list in distance order
+        # Use insertion sort to add newly discovered unvisted nodes to unvisited list in distance+heuristic order
         for node in adjacents:
             if node not in unvisited and not node.visited:
                 index = len(unvisited)
